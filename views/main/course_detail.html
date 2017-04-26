@@ -1,0 +1,56 @@
+
+
+<!-- 继承模板 -->
+{%  extends 'layout.html'  %}
+
+<!-- 子模版重写  -->
+{% block main %}
+
+
+
+
+<header>
+    <a href="/course" class="return"><img src="/public/dist/images/main/icon_return.png"></a>
+    <div class=" header-title">
+        <strong>课程详情</strong>
+    </div>
+</header>
+<div class="container page-top-bottom course-detail">
+    <img class="showImg" src="" data-url="{{course.img}}" alt="">
+    <div class="detail-main">
+        <h3> {{course.name}}</h3>
+        <p>￥{{course.money}}</p>
+    </div>
+    <div class="detail-box">
+        <h3>课程详情</h3>
+        <div class="detail-content">
+            {{course.details}}
+        </div>
+    </div>
+</div>
+<div class="foot-bar  foot-bar-one foot-bar-red" flex="main:left cross:center box:mean">
+    <a href="/course/pay?id={{course._id.toString()}}">立即购买</a>
+</div>
+<!--<div class="pay-dialog">
+    <div class="con">
+        <h4>{{course.name}}</h4>
+        <p>￥{{course.money}}</p>
+    </div>
+    <button>立即购买</button>
+</div>-->
+<script>
+    $(function () {
+        var $img = $('.showImg');
+        $.each($img, function (eq,item) {
+            var src = showImg($(this).attr('data-url'));
+            $(this).attr('src',src);
+        });
+        $('.detail-content').html(htmlDecodeByRegExp($('.detail-content').html()));
+    });
+
+</script>
+
+{% endblock %}
+
+
+

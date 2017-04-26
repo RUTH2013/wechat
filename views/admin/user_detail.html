@@ -1,0 +1,27 @@
+<!-- 继承模板 -->
+{%  extends 'layout.html'  %}
+
+<!-- 子模版重写  -->
+{% block main %}
+
+<div class="top breadcrumb clear ">
+    <span><a href="/admin/course">用户列表</a></span> /
+    <span class="active">用户详情 - {{user.username}}</span>
+</div>
+
+<div class="body">
+    <form class="courseForm" method="post">
+        <div class="form-group">
+            <label>订购课程（{{user.course.length}}门课程）：</label>
+            <p>
+                {% for course in courses %}
+                <span>{{course.name}}、</span>
+                {% endfor %}
+            </p>
+        </div>
+    </form>
+
+</div>
+
+
+{% endblock %}
