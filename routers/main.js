@@ -26,6 +26,13 @@ var Comment = require('../models/Comment');
 // 统一返回格式
 var responseData;
 router.use(function (req, res, next) {
+    // 判断是否是管理员
+    if (!req.userInfo){
+        // res.send('对不起，您不是管理员!');
+        // 重定向redirect
+        res.redirect("/oauth/wx_login");//重定向到微信授权
+        return;
+    }
     responseData= {
         code: 0,
         message: ''
@@ -236,8 +243,8 @@ router.get('/material/collect/add',function (req,res) {
             res.render('main/tip',{
                 userInfo: req.userInfo,
                 status: 'success',
-                message: '收藏成功'/*,
-                url: '/material'*/
+                message: '收藏成功',
+                url: '/material'
             });
         })
     });
@@ -260,8 +267,8 @@ router.get('/material/collect/delete',function (req,res) {
             res.render('main/tip',{
                 userInfo: req.userInfo,
                 status: 'success',
-                message: '取消收藏成功'/*,
-                url: '/material'*/
+                message: '取消收藏成功',
+                url: '/material'
             });
         })
 
@@ -516,6 +523,7 @@ router.post('/quiz/add',function (req,res) {
 router.get('/personal',function (req,res) {
     if(!req.userInfo){
         res.send('请点登陆！！！');
+        return;
     }
     User.findOne({
         _id: req.userInfo._id.toString()
