@@ -115,7 +115,7 @@ app.use('/',require('./routers/main'));  // 前台模块
 
 
 // 连接数据库
-mongoose.connect('mongodb://localhost:27018/wechat',function (err) {
+mongoose.connect('mongodb://localhost:27017/wechat',function (err) {
     if (err){
         console.log('数据库连接失败');
     }else {
