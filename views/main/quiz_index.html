@@ -31,7 +31,7 @@
         {% for quiz in quizs %}
         <a href="/quiz/detail?id={{quiz._id.toString()}}" class="quizItem clear">
             <div class="clear">
-                <img class="fl" src="/public/dist/images/main/content/photo.png" alt="">
+                <img class="fl" src="{{quiz.user.headImgUrl}}" alt="">
                 <div class="name fl">
                     <strong>{{quiz.user.username}}</strong>
                     <p class="formTime">{{quiz.addTime|date('Y-m-d H:i:s', -8*60)}}</p>
@@ -48,9 +48,12 @@
     {% endif %}
 </div>
 <script>
-    $.each($('.formTime'),function () {
-        $(this).html(timeAgo($(this).html()));
-    });
+    $(function(){
+        $.each($('.formTime'),function () {
+            $(this).html(timeAgo($(this).html()));
+        });
+        $('.quizList img').attr('onerror',"src='/public/dist/images/main/content/photo.png'");
+    })
 </script>
 <!-- 引入子集 -->
 {% include 'footer.html' %}

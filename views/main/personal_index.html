@@ -18,7 +18,7 @@
 <div class="container  page-top-bottom personal">
     <div class="top-banner">
         <div>
-            <img src="/public/dist/images/main/content/photo.png" alt="">
+            <img src="{{user.headImgUrl}}" alt="">
         </div>
         <span>{{user.username}}</span>
     </div>
@@ -39,6 +39,12 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(function(){
+        $('.top-banner img').attr('onerror',"src='/public/dist/images/main/content/photo.png'");
+    })
+</script>
 
 <!-- 引入子集 -->
 {% include 'footer.html' %}
