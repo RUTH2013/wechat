@@ -30,6 +30,8 @@ module.exports = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         // 引用
         ref: 'Course'  // 要关联的模型
-    }]
+    }],
+    openId: String,
+    headImgUrl: String
 
 });

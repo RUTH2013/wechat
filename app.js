@@ -29,6 +29,7 @@ var User = require('./models/User');
 // 当用户访问的URL以/public开始， 那么直接返回对应的 __dirname + '/public' 的文件，    文件路径要写成 /public/xxx.css
 app.use('/public',express.static(__dirname + '/public'));
 app.use('/main',express.static(__dirname + '/views/main'));
+app.use('/',express.static(__dirname + '/wechat'));
 
 
 
@@ -111,6 +112,7 @@ app.get('/',function (req,res,next) {
 app.use('/admin',require('./routers/admin'));  // 后台模块
 app.use('/api',require('./routers/api'));  // api模块
 app.use('/',require('./routers/main'));  // 前台模块
+app.use('/oauth',require('./routers/oauth'));  // 微信授权
 
 
 
@@ -119,7 +121,7 @@ mongoose.connect('mongodb://localhost:27017/wechat',function (err) {
     if (err){
         console.log('数据库连接失败');
     }else {
-        console.log('数据库连接成功');
+        console.log('数据库连接成功1');
 
         // 监听http请求
         app.listen(8081);
