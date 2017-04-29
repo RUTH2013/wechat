@@ -24,7 +24,7 @@ var Comment = require('../models/Comment');
 var responseData;
 
 router.use(function (req,res,next) {
-    console.log(req.userInfo);
+    // console.log(req.userInfo);
     // 判断是否是管理员
     if (!req.userInfo.isAdmin){
         // res.send('对不起，您不是管理员!');
@@ -79,7 +79,7 @@ router.get('/usersList',function (req,res,next) {
         var skip = (page-1)*limit;
 
         User.find().sort({_id: -1}).limit(limit).skip(skip).then(function (users) {
-            //console.log(users);  // 用户记录
+            console.log(users);  // 用户记录
             res.render('admin/usersList',{
                 userInfo: req.userInfo,
                 users: users,

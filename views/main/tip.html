@@ -33,7 +33,11 @@
             $(".tipBox").slideUp();
             if (url==''){
                 window.history.back();
-            }else{
+            }
+            else if(url=="referrer"){
+                window.location=document.referrer;
+            }
+            else{
                 window.location.assign(url);   // 切换路径
             }
         },1000);

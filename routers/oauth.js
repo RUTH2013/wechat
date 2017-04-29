@@ -65,7 +65,7 @@ router.get('/get_wx_access_token', function(req,res, next){
                             var userinfo = JSON.parse(body);
                             //console.log(JSON.parse(body));
                             console.log('获取微信信息成功！');
-                            // console.log(userinfo);
+                            console.log(userinfo);
                             responseData.userInfo = {
                                 username: userinfo.nickname,
                                 headImgUrl: userinfo.headimgurl,
@@ -146,9 +146,6 @@ router.get('/userInfo',function(req,res,next){
         // res.json(responseData);
         res.redirect('/course');
     })
-});
-router.get('/test',function(req,res,next){
-    res.send('测试一下')
 });
 
 

@@ -245,7 +245,7 @@ router.get('/material/collect/add',function (req,res) {
                 userInfo: req.userInfo,
                 status: 'success',
                 message: '收藏成功',
-                url: '/material'
+                url: 'referrer'
             });
         })
     });
@@ -269,7 +269,7 @@ router.get('/material/collect/delete',function (req,res) {
                 userInfo: req.userInfo,
                 status: 'success',
                 message: '取消收藏成功',
-                url: '/material'
+                url: 'referrer'
             });
         })
 
