@@ -92,10 +92,14 @@ router.post('/user/register',function (req,res) {   //   /user/xxx === /api/user
         };
 
         // 发送cookie信息 -- > 用户登录信息
-        req.cookies.set('userInfo',JSON.stringify({
+        req.session.userInfo2= JSON.stringify({
+             _id: userInfo._id,
+             username: userInfo.username
+        });
+        /*req.cookies.set('userInfo',JSON.stringify({
             _id: newUserInfo._id,
             username: newUserInfo.username
-        }));
+        }));*/
         ////用来设置cookies 信息 --end
 
         res.json(responseData);
@@ -142,10 +146,15 @@ router.post('/user/login',function (req,res) {
         };
 
         // 发送cookie信息 -- > 用户登录信息
-        req.cookies.set('userInfo',JSON.stringify({
-            _id: userInfo._id,
-            username: encodeURIComponent(userInfo.username)
-        }));
+        // req.cookies.set('userInfo',JSON.stringify({
+        //     _id: userInfo._id,
+        //     username: encodeURIComponent(userInfo.username)
+        // }));
+        req.session.userInfo2= JSON.stringify({
+             _id: userInfo._id,
+             username: encodeURIComponent(userInfo.username)
+        });
+
         ////////用来设置cookies 信息 --end
         console.log(responseData);
 
@@ -158,7 +167,8 @@ router.post('/user/login',function (req,res) {
 /** 用户登录退出 */
 router.get('/user/logout',function (req,res) {
     // 将cookie设置为空 --- > 清除cookies信息
-    req.cookies.set('userInfo', null);
+    // req.cookies.set('userInfo', null);
+    req.session.userInfo2= null;
     responseData.message = '退出成功';
     // 返回结果
     res.json(responseData);

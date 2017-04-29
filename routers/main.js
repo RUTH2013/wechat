@@ -27,13 +27,13 @@ var Comment = require('../models/Comment');
 var responseData;
 router.use(function (req, res, next) {
     // 判断是否是管理员
-    // if (!req.userInfo._id){
-    //     // res.send('对不起，您不是管理员!');
-    //     // 重定向redirect
-    //     console.log('跳转到网页授权4');
-    //     res.redirect("/oauth/wx_login");//重定向到微信授权
-    //     return;
-    // }
+    if (!req.userInfo._id){
+        // res.send('对不起，您不是管理员!');
+        // 重定向redirect
+        console.log('跳转到网页授权5');
+        res.redirect("/oauth/wx_login");//重定向到微信授权
+        return;
+    }
     responseData= {
         code: 0,
         message: ''

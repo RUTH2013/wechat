@@ -115,21 +115,25 @@ router.get('/userInfo',function(req,res,next){
                 headImgUrl: responseData.userInfo.headImgUrl
             });
             return user.save(); // 保存
-            
+
         }
 
     }).then(function (newUserInfo) {
-        console.log('新用户'+newUserInfo); // 新注册的信息数据
+        // console.log('新用户'); // 新注册的信息数据
         responseData.message = '注册成功！';
 
         ////用来设置cookies 信息
-         responseData.userInfo = {
+        responseData.userInfo = {
+            _id: newUserInfo._id,
+            username: newUserInfo.username,
+            headImgUrl: newUserInfo.headImgUrl
+        };
+
+        console.log('cookies'+req.cookies);    
+        req.session.userInfo2= JSON.stringify({
              _id: newUserInfo._id,
-             username: newUserInfo.username,
-             headImgUrl: newUserInfo.headImgUrl
-         };
-
-
+             username: encodeURIComponent(newUserInfo.username)
+        });
         // 发送cookie信息 -- > 用户登录信息
         // req.cookies.set('userInfo',JSON.stringify({
         //     _id: newUserInfo._id,
@@ -138,7 +142,7 @@ router.get('/userInfo',function(req,res,next){
 
         // }));
         ////用来设置cookies 信息 --end
-        console.log('用户跳转');
+        console.log('用户跳转2');
         // res.json(responseData);
         res.redirect('/course');
     })

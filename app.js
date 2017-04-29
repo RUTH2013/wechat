@@ -49,13 +49,42 @@ swig.setDefaults({cache : false});  // ----> 清楚缓存
 // bodyParser 设置
 app.use( bodyParser.urlencoded({extended: true})) ; // 在post请求发过来的req中增加属性 body , 保存post提交过来的数据
 
+
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+
+app.use(cookieParser('sessiontest'));
+app.use(session({
+    secret: 'sessiontest',//与cookieParser中的一致
+    resave: true,
+    saveUninitialized:true
+}));
+
 // 设置cookies
 app.use(function (req,res,next) {
-    req.cookies = new Cookies(req,res);
+    // console.log(req.session);
+    // req.cookies = new Cookies(req,res);
+    // req.userInfo = {};
+    // if (req.cookies.get('userInfo')){  // 当cookies中有信息时
+    //     try{
+    //         req.userInfo = JSON.parse(req.cookies.get('userInfo')); // 读取存储的userInfo信息
+
+    //         // 判断是否是管理员
+    //         User.findById(req.userInfo._id).then(function (userInfo) {
+    //             req.userInfo.isAdmin = Boolean(userInfo.isAdmin);
+    //             next();
+    //         });
+
+
+    //     }catch (e){}
+    // }else{
+    //     next();
+
+    // }
     req.userInfo = {};
-    if (req.cookies.get('userInfo')){  // 当cookies中有信息时
+    if (req.session.userInfo2){  // 当cookies中有信息时
         try{
-            req.userInfo = JSON.parse(req.cookies.get('userInfo')); // 读取存储的userInfo信息
+            req.userInfo = JSON.parse(req.session.userInfo2); // 读取存储的userInfo信息
 
             // 判断是否是管理员
             User.findById(req.userInfo._id).then(function (userInfo) {

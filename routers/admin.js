@@ -24,6 +24,7 @@ var Comment = require('../models/Comment');
 var responseData;
 
 router.use(function (req,res,next) {
+    console.log(req.userInfo);
     // 判断是否是管理员
     if (!req.userInfo.isAdmin){
         // res.send('对不起，您不是管理员!');
