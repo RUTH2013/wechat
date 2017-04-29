@@ -78,7 +78,7 @@ router.get('/usersList',function (req,res,next) {
         var skip = (page-1)*limit;
 
         User.find().sort({_id: -1}).limit(limit).skip(skip).then(function (users) {
-            console.log(users);  // 用户记录
+            //console.log(users);  // 用户记录
             res.render('admin/usersList',{
                 userInfo: req.userInfo,
                 users: users,
@@ -226,7 +226,21 @@ router.get('/usersList/detail',function (req,res) {
     });
 
 });
-
+/** 用户删除 */
+router.get('/usersList/delete',function (req,res) {
+    // 获取要删除的分类的信息， 并且用表单的形式展现出来
+    var id = req.query.id || ''; // 要删除的id
+    User.remove({
+        _id: id
+    }).then(function () {
+        res.render('admin/tip',{
+            userInfo: req.userInfo,
+            status: 'success',
+            message: '用户删除成功',
+            url: '/admin/usersList'
+        });
+    });
+});
 
 
 /** 课程管理 */

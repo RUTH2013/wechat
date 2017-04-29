@@ -22,7 +22,7 @@ responseData= {
 var AppID = 'wxda012def4dfa6e8d';
 var AppSecret = 'debd8ebbcd443c37fe828f7f84d24581';
 router.get('/wx_login', function(req,res, next){
-    //console.log("oauth - login")
+    console.log("oauth - login")
 
     // 第一步：用户同意授权，获取code
     var router = 'get_wx_access_token';
@@ -36,7 +36,7 @@ router.get('/wx_login', function(req,res, next){
 
 
 router.get('/get_wx_access_token', function(req,res, next){
-    //console.log("get_wx_access_token")
+    console.log("get_wx_access_token")
     //console.log("code_return: "+req.query.code)
 
     // 第二步：通过code换取网页授权access_token
@@ -101,17 +101,25 @@ router.get('/userInfo',function(req,res,next){
     User.findOne({
         openId: responseData.userInfo.openId  // 查询条件
     }).then(function (userInfo) {
-        console.log(userInfo); // 查询到的数据信息
+        console.log('用户信息'+userInfo); // 查询到的数据信息
         // 保存用户注册的信息到数据库
-        var user = new User({// 通过操作对象来操作数据库
-            openId: responseData.userInfo.openId,
-            username: responseData.userInfo.username,
-            headImgUrl: responseData.userInfo.headImgUrl
-        });
-        return user.save(); // 保存
+        if (userInfo) {
+            userInfo.username = responseData.userInfo.username;
+            userInfo.headImgUrl = responseData.userInfo.headImgUrl;
+            return userInfo.save(); // 保存
+        }
+        else{
+            var user = new User({// 通过操作对象来操作数据库
+                openId: responseData.userInfo.openId,
+                username: responseData.userInfo.username,
+                headImgUrl: responseData.userInfo.headImgUrl
+            });
+            return user.save(); // 保存
+            
+        }
 
     }).then(function (newUserInfo) {
-        // console.log(newUserInfo); // 新注册的信息数据
+        console.log('新用户'+newUserInfo); // 新注册的信息数据
         responseData.message = '注册成功！';
 
         ////用来设置cookies 信息
@@ -121,19 +129,23 @@ router.get('/userInfo',function(req,res,next){
              headImgUrl: newUserInfo.headImgUrl
          };
 
+
         // 发送cookie信息 -- > 用户登录信息
-        req.cookies.set('userInfo',JSON.stringify({
-            _id: newUserInfo._id,
-            username: newUserInfo.username
-            // headImgUrl: newUserInfo.headImgUrl,
+        // req.cookies.set('userInfo',JSON.stringify({
+        //     _id: newUserInfo._id,
+        //     username: newUserInfo.username
+        //     // headImgUrl: newUserInfo.headImgUrl,
 
-        }));
+        // }));
         ////用来设置cookies 信息 --end
-
+        console.log('用户跳转');
         // res.json(responseData);
         res.redirect('/course');
     })
-})
+});
+router.get('/test',function(req,res,next){
+    res.send('测试一下')
+});
 
 
 module.exports = router;

@@ -27,12 +27,13 @@ var Comment = require('../models/Comment');
 var responseData;
 router.use(function (req, res, next) {
     // 判断是否是管理员
-    if (!req.userInfo){
-        // res.send('对不起，您不是管理员!');
-        // 重定向redirect
-        res.redirect("/oauth/wx_login");//重定向到微信授权
-        return;
-    }
+    // if (!req.userInfo._id){
+    //     // res.send('对不起，您不是管理员!');
+    //     // 重定向redirect
+    //     console.log('跳转到网页授权4');
+    //     res.redirect("/oauth/wx_login");//重定向到微信授权
+    //     return;
+    // }
     responseData= {
         code: 0,
         message: ''
@@ -521,12 +522,15 @@ router.post('/quiz/add',function (req,res) {
 
 /** 个人 */
 router.get('/personal',function (req,res) {
-    if(!req.userInfo){
-        res.send('请点登陆！！！');
+    if(!req.userInfo._id){
+        // res.send('请点登陆！！！');
+
+        console.log('跳转到网页授权4');
+        res.redirect("/oauth/wx_login");//重定向到微信授权
         return;
     }
     User.findOne({
-        _id: req.userInfo._id.toString()
+        _id: req.userInfo._id
     }).then(function (user) {
         res.render('main/personal_index',{
             userInfo: req.userInfo,

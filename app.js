@@ -111,8 +111,8 @@ app.get('/',function (req,res,next) {
 // 使用app.use()进行模块划分  根据不同的功能划分模板
 app.use('/admin',require('./routers/admin'));  // 后台模块
 app.use('/api',require('./routers/api'));  // api模块
-app.use('/',require('./routers/main'));  // 前台模块
 app.use('/oauth',require('./routers/oauth'));  // 微信授权
+app.use('/',require('./routers/main'));  // 前台模块
 
 
 
