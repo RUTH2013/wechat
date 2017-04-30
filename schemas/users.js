@@ -31,7 +31,13 @@ module.exports = new mongoose.Schema({
         // 引用
         ref: 'Course'  // 要关联的模型
     }],
-    openId: String,
-    headImgUrl: String
+    openId: {
+        type: String,
+        default: ''
+    },
+    headImgUrl: {
+        type: String,
+        default: '/public/dist/images/main/content/photo.png'
+    }
 
 });

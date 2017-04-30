@@ -346,6 +346,7 @@ router.get('/quiz/detail',function (req,res) {
     Quiz.findOne({
         _id: id
     }).populate(populateParams).then(function (quiz) {
+        console.log(quiz);
         if (!quiz){ // 当不存在该分类
 
             res.render('main/tip',{

@@ -29,7 +29,7 @@
     {% for comment  in quiz.comments %}
     <div class="quiz-detail-item">
         <div class="com-name clear">
-            <img class="fl" src="{{comment.user.headImgUrl}" alt="">
+            <img class="fl" src="{{comment.user.headImgUrl}}" alt="">
             <strong class="fl">{{comment.user.username}}</strong>
         </div>
         {% if comment.replies %}
