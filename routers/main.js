@@ -19,6 +19,8 @@ var Quiz = require('../models/Quiz');
 // 引入 Comment 模型  评论
 var Comment = require('../models/Comment');
 
+var wxPayControl = require('./pay.js');
+
 // 监听 以 / 开始的url
 
 
@@ -91,34 +93,105 @@ router.get('/course/detail',function (req,res,next) {   //   /course === /admin/
 router.get('/course/pay',function (req,res) {
     // 获取要收藏的干货的信息， 并且用表单的形式展现出来
     var id = req.query.id || ''; // 要收藏的id
+    var openid = null;
 
-    User.update({
+    var notify_url = '/course/detail?id='+id;
+    var spbill_create_ip = "120.24.169.84";
+    var total_fee = 1;
+    var obj = {
+        body : "德语学习平台-课程报名", //描述微信支付的意义
+        notify_url : notify_url,// 微信付款后的回调地址
+        out_trade_no : new Date().getTime(),//new Date().getTime(), //订单号
+        spbill_create_ip :spbill_create_ip,
+        total_fee : total_fee//金额
+    }
+
+    User.findOne({
         _id: req.userInfo._id.toString()
-    },{
-        '$addToSet':{'course':id}
-    }).then(function (result) {
-        if(!result.nModified){
+    }).then(function (user) {
+        if(!user){
             res.render('main/tip',{
                 userInfo: req.userInfo,
                 status: 'warning',
-                message: '已经报名过，不能再次报名',
+                message: '没有存在该用户',
                 url: '/course/detail?id='+id
             });
-            return;
+            return Promise.reject();
         }
-        Course.update({
-            _id: id
-        },{
-            '$addToSet':{'peopleNum': req.userInfo._id.toString()}
-        }).then(function (result) {
-            res.render('main/tip',{
-                userInfo: req.userInfo,
-                status: 'success',
-                message: '报名成功',
-                 url: '/personal/course?userid='+ req.userInfo._id
-            });
+        openid = user.opendId;
+        wxPayControl.getAccessToken(obj,openid,function (err,wxParam) {
+                console.log('出错'+err);
+                console.log('微信返回参数'+wxParam);
+
         })
-    });
+
+        // return User.update({
+        //     _id: req.userInfo._id.toString()
+        // },{
+        //     '$addToSet':{'course':id}
+        // });
+
+    // }).then(function (result) {
+    //     if(!result.nModified){
+    //         res.render('main/tip',{
+    //             userInfo: req.userInfo,
+    //             status: 'warning',
+    //             message: '已经报名过，不能再次报名',
+    //             url: '/course/detail?id='+id
+    //         });
+    //         return Promise.reject();
+    //     }
+    //     Course.update({
+    //         _id: id
+    //     },{
+    //         '$addToSet':{'peopleNum': req.userInfo._id.toString()}
+    //     }).then(function (result) {
+    //         wxPayControl.getAccessToken(obj,openid,function (err,wxParam) {
+    //             console.log('出错'+err);
+    //             // console.log('微信返回参数'+wxParam);
+
+    //         })
+    //         // res.render('main/tip',{
+    //         //     userInfo: req.userInfo,
+    //         //     status: 'success',
+    //         //     message: '报名成功',
+    //         //      url: '/personal/course?userid='+ req.userInfo._id
+    //         // });
+    //     })
+       
+    
+
+    })
+
+
+
+    // User.update({
+    //     _id: req.userInfo._id.toString()
+    // },{
+    //     '$addToSet':{'course':id}
+    // }).then(function (result) {
+    //     if(!result.nModified){
+    //         res.render('main/tip',{
+    //             userInfo: req.userInfo,
+    //             status: 'warning',
+    //             message: '已经报名过，不能再次报名',
+    //             url: '/course/detail?id='+id
+    //         });
+    //         return;
+    //     }
+    //     Course.update({
+    //         _id: id
+    //     },{
+    //         '$addToSet':{'peopleNum': req.userInfo._id.toString()}
+    //     }).then(function (result) {
+    //         res.render('main/tip',{
+    //             userInfo: req.userInfo,
+    //             status: 'success',
+    //             message: '报名成功',
+    //              url: '/personal/course?userid='+ req.userInfo._id
+    //         });
+    //     })
+    // });
 });
 
 
