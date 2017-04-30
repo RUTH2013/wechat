@@ -69,8 +69,8 @@ wxPayControl.getAccessToken = function(obj,openid,callback) {
         if (error) {
             callback(error);
         } else {
-            console.log("微信支付的参数");
-            console.log(responseData);
+            //console.log("微信支付的参数");
+            //console.log(responseData);
             callback(null, responseData);
         }
     });
@@ -122,17 +122,19 @@ function getPrepayId(obj,openid){
         openid : openid,
         out_trade_no : obj.out_trade_no,//new Date().getTime(), //订单号
         spbill_create_ip : obj.spbill_create_ip,
-        total_fee : obj.total_fee,
+        total_fee : 1,
         trade_type : 'JSAPI',
-
+        attach:obj.attach,
     };
     // 返回 promise 对象
     return  new Promise(function (resolve, reject) {
         // 获取 sign 参数
         UnifiedorderParams.sign = getSign(UnifiedorderParams);
+
+
         var url = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
         request.post({url : url, body:JSON.stringify(getUnifiedorderXmlParams(UnifiedorderParams))}, function (error, response, body) {
-            console.log("微信下单返回数据");
+            //console.log("微信下单返回数据");
             // console.log(response);
             var prepay_id = '';
             if (!error && response.statusCode == 200) {
@@ -168,9 +170,9 @@ function getBrandWCPayParams(obj,openid,callback ){
         };
         wcPayParams.paySign = getSign(wcPayParams); //微信支付签名
         // console.log(wcPayParams.paySign);
-        console.log("微信支付的所有参数");
+        //console.log("微信支付的所有参数");
         // console.log(wcPayParams);
-        callback(null, wcPayParams);
+        callback(wcPayParams);
     },function (error) {
         callback(error);
     });
@@ -187,6 +189,7 @@ function getUnifiedorderXmlParams(obj){
         '<nonce_str>'+obj.nonce_str+'</nonce_str>' +
         '<notify_url>'+obj.notify_url+'</notify_url>' +
         '<openid>'+obj.openid+'</openid>' +
+        '<attach>'+obj.attach+'</attach>' +
         '<out_trade_no>'+obj.out_trade_no+'</out_trade_no>'+
         '<spbill_create_ip>'+obj.spbill_create_ip+'</spbill_create_ip>' +
         '<total_fee>'+obj.total_fee+'</total_fee>' +
@@ -202,7 +205,7 @@ function getUnifiedorderXmlParams(obj){
  */
 function getSign(signParams){
     // 按 key 值的ascll 排序
-    console.log('支付签名');
+    //console.log('支付签名');
     // console.log(signParams);
     var keys = Object.keys(signParams);
     keys = keys.sort();
@@ -213,7 +216,7 @@ function getSign(signParams){
         }
     })
     var string = queryString.stringify(newArgs)+'&key='+wxConfig.wxPayKey;
-    console.log(string);
+    //console.log(string);
 
     // 生成签名
     return crypto.createHash('md5').update(queryString.unescape(string), 'utf8').digest("hex").toUpperCase();

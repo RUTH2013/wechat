@@ -17,7 +17,7 @@
         </div>
         <div class="form-group">
             <label for="money">课程价格：</label>
-            <input type="number" class="form-control" id="money" placeholder="请输入课程价格" name="money" required="required">
+            <input type="text" class="form-control" id="money" placeholder="请输入课程价格" name="money" required="required" onkeyup= "if( ! /^-?\d+\.?\d{0,2}$/.test(this.value)){ var s = this.value;this.value=s.substring(0,s.length-1);}">
         </div>
         <div class="form-group" style="height: 430px; width: 910px; ">
             <label for="img">选择图片：(请选择正方形图片，建议是大于或等于750*750尺寸)</label>
