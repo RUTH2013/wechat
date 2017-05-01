@@ -67,7 +67,6 @@
     $(function () {
         $('#content').html('');
 
-        $('.quiz-description').html(htmlDecodeByRegExp($('.quiz-description').html()));
         $.each($('.formTime'),function () {
             $(this).html(timeAgo($(this).html()));
         });

@@ -19,8 +19,8 @@
             <label for="money">课程价格：</label>
             <input type="text" class="form-control" id="money" placeholder="请输入课程价格" name="money" required="required"  value="{{course.money}}" onkeyup= "if( ! /^-?\d+\.?\d{0,2}$/.test(this.value)){ var s = this.value;this.value=s.substring(0,s.length-1);}">
         </div>
-        <div class="form-group">
-            <label for="money">报名人员（{{course.peopleNum.length}}人报名）：</label>
+        <div class="form-group peopelNum">
+            <label>报名人员（ <span class="blueText">{{course.peopleNum.length}}</span> 人报名）：</label>
             <p>
                 {% for people in users %}
                 <span>{{people.username}}、</span>
@@ -46,6 +46,9 @@
 </div>
 <script type="text/javascript">
 
+    $('.peopelNum').find('span.blueText').html( $('.peopelNum').find('p span').length );
+
+
     var editor1 = new wangEditor('img');
     // 上传文件路径
     editor1.config.uploadImgUrl = '/api/upload';
@@ -57,6 +60,8 @@
     editor1.config.menuFixed = false;
 
     editor1.create();
+    // 为页面所有的editor配置全局的密钥
+    wangEditor.config.mapAk = 'Zp7sSTV9tMMeixWaWgtV71CT4RRxRQbF';  // 此处换成自己申请的密钥
 
 
     var editor2 = new wangEditor('details');
@@ -64,43 +69,24 @@
     editor2.config.uploadImgUrl = '/api/upload';
     // 关闭菜单栏fixed
     editor2.config.menuFixed = false;
-    // 表情显示项
-    editor2.config.emotionsShow = 'value';
-    editor2.config.emotions = {
-        'default': {
-            title: '默认',
-            data: '/public/wangEditor/emotions.data'
-        },
-        'weibo': {
-            title: '微博表情',
-            data: [
-                {
-                    icon: 'http://img.t.sinajs.cn/t35/style/images/common/face/ext/normal/7a/shenshou_thumb.gif',
-                    value: '[草泥马]'
-                },
-                {
-                    icon: 'http://img.t.sinajs.cn/t35/style/images/common/face/ext/normal/60/horse2_thumb.gif',
-                    value: '[神马]'
-                },
-                {
-                    icon: 'http://img.t.sinajs.cn/t35/style/images/common/face/ext/normal/bc/fuyun_thumb.gif',
-                    value: '[浮云]'
-                },
-                {
-                    icon: 'http://img.t.sinajs.cn/t35/style/images/common/face/ext/normal/c9/geili_thumb.gif',
-                    value: '[给力]'
-                },
-                {
-                    icon: 'http://img.t.sinajs.cn/t35/style/images/common/face/ext/normal/f2/wg_thumb.gif',
-                    value: '[围观]'
-                },
-                {
-                    icon: 'http://img.t.sinajs.cn/t35/style/images/common/face/ext/normal/70/vw_thumb.gif',
-                    value: '[威武]'
-                }
-            ]
-        }
+    
+    
+    // 字号
+    editor2.config.fontsizes = {
+        // 格式：'value': 'title'
+        1: '0.26rem',
+        2: '0.28rem',
+        3: '0.30rem',
+        4: '0.32rem',
+        5: '0.34rem',
+        6: '0.36rem',
+        7: '0.38rem',
+        7: '0.40rem'
     };
+
+    // 为当前的editor配置密钥
+    editor2.config.mapAk = 'Zp7sSTV9tMMeixWaWgtV71CT4RRxRQbF';  // 此处换成自己申请的密钥
+
 
 
     editor2.create();

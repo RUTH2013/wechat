@@ -1,6 +1,6 @@
 @charset "utf-8";
 html {
-  font-family: "微软雅黑", "Helvetica Neue", Helvetica, sans-serif;
+  font-family: "微软雅黑";
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
@@ -451,9 +451,9 @@ body {
   left: 0;
   max-width: 750px;
   margin: 0 auto;
-  font-family: "微软雅黑", "Helvetica Neue", Helvetica, sans-serif;
-  font-size: 0.24rem;
-  line-height: 1.42857;
+  font-family: "微软雅黑";
+  font-size: 0.28rem;
+  line-height: 1.6;
   color: #333;
   background: #eeeeee;
   overflow: hidden;
@@ -796,11 +796,12 @@ form .form-group textarea {
   background: no-repeat center;
   background-size: 100%;
   margin-right: .1rem;
+  vertical-align: middle;
 }
 .icon span {
   float: left;
   font-size: .26rem;
-  line-height: .26rem;
+  line-height: .3rem;
   color: #999;
 }
 .icon.active span {
@@ -901,13 +902,13 @@ form .form-group textarea {
   background: #fff;
 }
 .material-detail .title {
-  font-size: .3rem;
-  line-height: .3rem;
+  font-size: .36rem;
+  line-height: .36rem;
   font-weight: 100;
 }
 .material-detail .detail-time {
   line-height: .66rem;
-  font-size: .24rem;
+  font-size: .26rem;
   color: #999;
   padding-bottom: 0.08rem;
 }

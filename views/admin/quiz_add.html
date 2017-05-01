@@ -17,7 +17,7 @@
         </div>
         <div class="form-group" style="width: 910px; ">
             <label for="description">补充问题：（您可在这里继续补充问题细节）</label>
-            <textarea id="description"  placeholder="您可在这里继续补充问题细节" name="description" style="width:100%; height: 500px; max-height:532px;"></textarea>
+            <textarea id="description" class="text"  placeholder="您可在这里继续补充问题细节" name="description" style="width:100%; height: 500px; max-height:532px;"></textarea>
         </div>
 
         <button type="submit" class="btn blueBtn">保存</button>
@@ -25,41 +25,7 @@
 
 </div>
 
-<script type="text/javascript">
 
-    var editor = new wangEditor('description');
-    // 上传文件路径
-    editor.config.uploadImgUrl = '/api/upload';
-    // 关闭菜单栏fixed
-    editor.config.menuFixed = false;
-    // 自定义菜单
-    editor.config.menus = [
-        'bold',
-        'underline',
-        'italic',
-        'eraser',
-        'forecolor',
-        'bgcolor',
-        '|',
-        'quote',
-        'fontfamily',
-        'fontsize',
-        'head',
-        'alignleft',
-        'aligncenter',
-        'alignright',
-        '|',
-        'link',
-        'unlink',
-        'img',
-        '|',
-        'undo',
-        'redo',
-        'fullscreen'
-    ];
-
-    editor.create();
-</script>
 
 
 {% endblock %}

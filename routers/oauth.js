@@ -119,7 +119,7 @@ router.get('/userInfo',function(req,res,next){
         }
 
     }).then(function (newUserInfo) {
-        // console.log('新用户'); // 新注册的信息数据
+        console.log('新用户' + newUserInfo); // 新注册的信息数据
         responseData.message = '注册成功！';
 
         ////用来设置cookies 信息

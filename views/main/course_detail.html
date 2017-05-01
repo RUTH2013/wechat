@@ -46,6 +46,16 @@
             $(this).attr('src',src);
         });
         $('.detail-content').html(htmlDecodeByRegExp($('.detail-content').html()));
+
+        // $('.detail-content').find('iframe')
+
+        
+
+        var $video = $('.detail-content').find('iframe');
+
+        $.each($video,function (eq,item) {
+            videoSize($('.detail-content'),$(this));
+        });
     });
 
     // ajax 请求微信支付

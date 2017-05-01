@@ -20,7 +20,8 @@
         <thead>
             <tr>
                 <th width="35%">用户ID</th>
-                <th width="35%">用户名</th>
+                <th width="22%">用户名</th>
+                <th width="20%">报名课程（数量）</th>
                 <th>操作</th>
             </tr>
         </thead>
@@ -28,7 +29,26 @@
         {% for user in users %}
             <tr>
                 <td>{{user._id.toString()}}</td>
-                <td>{{user.username}}</td>
+                <td>
+                    {{user.username}}
+                    {% if user.isAdmin %}
+                    (管理员)
+                    {% endif %}
+                </td>
+                <td class="peopelNum">
+                    {% if user.course.length >0 %}
+                    <span class="blueText">{{user.course.length}}</span>
+                    {% else %}
+                    <span>{{user.course.length}}</span>
+                    {% endif %}
+                    <p style="display: none;">
+                    {% for course in user.course %}
+                        <span>{{course.name}}、</span>
+                    {% endfor %}
+                    </p>
+                </td>
+                
+            </td>
                 <td>
                     <a href="/admin/usersList/detail?id={{user._id.toString()}}" class="btn greenBtn">查看详情</a>
                     <a href="/admin/usersList/delete?id={{user._id.toString()}}" class="btn redBtn">删除</a>
@@ -43,6 +63,11 @@
     {% endif %}
 
 </div>
+<script type="text/javascript">
+
+    $('.peopelNum').find('span.blueText').html( $('.peopelNum').find('p span').length );
+
+</script>
 
 {% if pageNum>1 %}
 <!-- 引入子集 -->

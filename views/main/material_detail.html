@@ -38,6 +38,16 @@
         });
 
         $('.detail-content').html(htmlDecodeByRegExp($('.detail-content').html()));
+
+        var $video = $('.detail-content').find('iframe');
+        var $ditu =  $('.detail-content').find('#dituContent') ;
+
+        $.each($video,function (eq,item) {
+            videoSize($('.detail-content'),$(this));
+        });
+        $.each($ditu ,function (eq,item) {
+            videoSize($('.detail-content'),$(this));
+        })
     });
 
 </script>

@@ -1,6 +1,6 @@
 @charset "utf-8";
 html {
-  font-family: "微软雅黑", "Helvetica Neue", Helvetica, sans-serif;
+  font-family: "微软雅黑";
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
@@ -238,16 +238,17 @@ a {
   color: #09957d;
   text-decoration: underline;
 }
-body {
-  background: black url(../../images/admin/black.jpg);
-  background-repeat: no-repeat;
-  background-size: 100% auto ;
-}
 body,
 html {
   width: 100%;
   height: 100%;
-  overflow: hidden;
+}
+body {
+  background: black url(../../images/admin/black.jpg);
+  background-repeat: no-repeat;
+  background-size: 100% auto ;
+  min-width: 1200px;
+  min-height: 700px;
 }
 #stars {
   position: absolute;
@@ -264,8 +265,10 @@ html {
   left: 0;
 }
 .loginInfo {
-  width: 800px;
-  margin: 230px 0 0  50%;
+  position: absolute;
+  top: 230px;
+  right: 　0;
+  width: 700px;
   box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.8);
   color: #ffffff;
   text-align: center;

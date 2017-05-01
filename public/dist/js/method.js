@@ -160,3 +160,16 @@ function limitImg(img,parent) {
     };
 
 }
+
+/* 计算 视频的宽度 */
+function videoSize(parent,children) {
+    var scale = children.width()/children.height();
+    if( children.outerWidth(true) > parent.width() ){
+        children.css({
+            maxWidth: '100%'
+        });
+        children.width(parent.width()) ;
+        children.height(children.width()/scale);
+
+    }
+}

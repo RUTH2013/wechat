@@ -78,7 +78,7 @@ router.get('/usersList',function (req,res,next) {
 
         var skip = (page-1)*limit;
 
-        User.find().sort({_id: -1}).limit(limit).skip(skip).then(function (users) {
+        User.find().sort({_id: -1}).limit(limit).skip(skip).populate('course').then(function (users) {
             // console.log(users);  // 用户记录
             res.render('admin/usersList',{
                 userInfo: req.userInfo,
@@ -104,7 +104,7 @@ router.post('/usersList',function (req,res,next) {   //   /course === /admin/cou
 
     User.find({
         'username':{$regex: search, $options:'i'}
-    }).sort({_id: -1}).then(function (users) {
+    }).sort({_id: -1}).populate('course').then(function (users) {
         res.render('admin/usersList',{
             userInfo: req.userInfo,
             users: users,
@@ -206,7 +206,7 @@ router.get('/usersList/detail',function (req,res) {
             res.render('admin/tip',{
                 userInfo: req.userInfo,
                 status: 'warning',
-                message: '不存在该课程信息',
+                message: '不存在该用户信息',
                 url: '/admin/usersList'
             });
             return Promise.reject();
@@ -231,16 +231,31 @@ router.get('/usersList/detail',function (req,res) {
 router.get('/usersList/delete',function (req,res) {
     // 获取要删除的分类的信息， 并且用表单的形式展现出来
     var id = req.query.id || ''; // 要删除的id
-    User.remove({
+
+   
+    Course.update({
         _id: id
-    }).then(function () {
-        res.render('admin/tip',{
-            userInfo: req.userInfo,
-            status: 'success',
-            message: '用户删除成功',
-            url: '/admin/usersList'
+    },{
+        '$pull':{'peopleNum': id}
+    }).then(function (result) {
+        return Quiz.remove({
+            user: id
+        })
+        
+    }).then(function (result) {
+        User.remove({
+            _id: id
+        }).then(function () {
+            res.render('admin/tip',{
+                userInfo: req.userInfo,
+                status: 'success',
+                message: '用户删除成功',
+                url: '/admin/usersList'
+            });
         });
-    });
+    })
+
+    
 });
 
 
@@ -275,7 +290,7 @@ router.get('/course',function (req,res,next) {
 
         var skip = (page-1)*limit;
 
-        Course.find().sort({_id: -1}).limit(limit).skip(skip).populate('user').then(function (courses) {
+        Course.find().sort({_id: -1}).limit(limit).skip(skip).populate(['user','peopleNum']).then(function (courses) {
             // console.log(courses);
 
             res.render('admin/course_index',{
@@ -305,7 +320,7 @@ router.post('/course',function (req,res,next) {   //   /course === /admin/course
         where={status: status}
     }
 
-    Course.where(where).find({'name':{$regex: search, $options:'i'}}).sort({_id: -1}).populate('user').then(function (courses) {
+    Course.where(where).find({'name':{$regex: search, $options:'i'}}).sort({_id: -1}).populate(['user','peopleNum']).then(function (courses) {
         res.render('admin/course_index',{
             userInfo: req.userInfo,
             courses: courses,
@@ -414,16 +429,23 @@ router.post('/course/edit',function (req,res) {
 router.get('/course/delete',function (req,res) {
     // 获取要删除的分类的信息， 并且用表单的形式展现出来
     var id = req.query.id || ''; // 要删除的id
-    Course.remove({
+    User.update({
         _id: id
-    }).then(function () {
-        res.render('admin/tip',{
-            userInfo: req.userInfo,
-            status: 'success',
-            message: '课程删除成功',
-            url: '/admin/course'
+    },{
+        '$pull':{'course': id}
+    }).then(function (result) {
+        Course.remove({
+            _id: id
+        }).then(function () {
+            res.render('admin/tip',{
+                userInfo: req.userInfo,
+                status: 'success',
+                message: '课程删除成功',
+                url: '/admin/course'
+            });
         });
-    });
+    })
+    
 });
 /** 课程上架*/
 router.post('/course/isPutAway/add',function (req,res) {

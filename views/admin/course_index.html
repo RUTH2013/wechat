@@ -53,7 +53,19 @@
         <tr>
             <td>{{course.name}}</td>
             <td>{{course.money}}</td>
-            <td>{{course.peopleNum.length}}</td>
+            <td class="peopelNum">
+                {% if course.peopleNum.length >0 %}
+                <span class="blueText">{{course.peopleNum.length}}</span>
+                {% else %}
+                <span>{{course.peopleNum.length}}</span>
+                {% endif %}
+                <p style="display: none;">
+                {% for user in course.peopleNum %}
+                    <span>{{user.username}}、</span>
+                {% endfor %}
+                </p>
+                
+            </td>
             <td>
                 {% if course.status == 0 %}
                 未上架
@@ -85,6 +97,8 @@
     {% endif %}
     <script>
         isPutAway('/admin/course/isPutAway');
+        $('.peopelNum').find('span.blueText').html( $('.peopelNum').find('p span').length );
+        
 
     </script>
 </div>

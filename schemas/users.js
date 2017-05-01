@@ -33,7 +33,7 @@ module.exports = new mongoose.Schema({
     }],
     openId: {
         type: String,
-        default: parseInt(new Date().getTime() / 1000).toString()
+        default: new Date().getTime().toString()
     },
     headImgUrl: {
         type: String,
