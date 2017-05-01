@@ -17,7 +17,7 @@
         </div>
         <div class="form-group">
             <label for="money">课程价格：</label>
-            <input type="number" class="form-control" id="money" placeholder="请输入课程价格" name="money" required="required"  value="{{course.money}}">
+            <input type="text" class="form-control" id="money" placeholder="请输入课程价格" name="money" required="required"  value="{{course.money}}" onkeyup= "if( ! /^-?\d+\.?\d{0,2}$/.test(this.value)){ var s = this.value;this.value=s.substring(0,s.length-1);}">
         </div>
         <div class="form-group">
             <label for="money">报名人员（{{course.peopleNum.length}}人报名）：</label>

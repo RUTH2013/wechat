@@ -65,7 +65,7 @@ router.get('/get_wx_access_token', function(req,res, next){
                             var userinfo = JSON.parse(body);
                             //console.log(JSON.parse(body));
                             console.log('获取微信信息成功！');
-                            console.log(userinfo);
+                            // console.log(userinfo);
                             responseData.userInfo = {
                                 username: userinfo.nickname,
                                 headImgUrl: userinfo.headimgurl,
@@ -101,7 +101,7 @@ router.get('/userInfo',function(req,res,next){
     User.findOne({
         openId: responseData.userInfo.openId  // 查询条件
     }).then(function (userInfo) {
-        console.log('用户信息'+userInfo); // 查询到的数据信息
+        // console.log('用户信息'+userInfo); // 查询到的数据信息
         // 保存用户注册的信息到数据库
         if (userInfo) {
             userInfo.username = responseData.userInfo.username;
@@ -129,7 +129,7 @@ router.get('/userInfo',function(req,res,next){
             headImgUrl: newUserInfo.headImgUrl
         };
 
-        console.log('cookies'+req.cookies);    
+        // console.log('cookies'+req.cookies);    
         req.session.userInfo2= JSON.stringify({
              _id: newUserInfo._id,
              username: encodeURIComponent(newUserInfo.username)

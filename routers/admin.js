@@ -79,7 +79,7 @@ router.get('/usersList',function (req,res,next) {
         var skip = (page-1)*limit;
 
         User.find().sort({_id: -1}).limit(limit).skip(skip).then(function (users) {
-            console.log(users);  // 用户记录
+            // console.log(users);  // 用户记录
             res.render('admin/usersList',{
                 userInfo: req.userInfo,
                 users: users,

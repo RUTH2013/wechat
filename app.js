@@ -17,6 +17,8 @@ var bodyParser = require('body-parser');
 //  加载cookie模块 　--> 用来处理登陆状态
 var Cookies = require('cookies');
 
+// 加载require('body-parser-xml') --->处理微信
+require('body-parser-xml')(bodyParser);
 
 // 创建app应用 ===> NodeJS Http.createServer()
 var app = express();
@@ -48,6 +50,17 @@ swig.setDefaults({cache : false});  // ----> 清楚缓存
 
 // bodyParser 设置
 app.use( bodyParser.urlencoded({extended: true})) ; // 在post请求发过来的req中增加属性 body , 保存post提交过来的数据
+
+
+// 解决微信支付通知回调数据
+app.use(bodyParser.xml({
+    limit: '2MB',   // Reject payload bigger than 1 MB
+    xmlParseOptions: {
+        normalize: true,     // Trim whitespace inside text nodes
+        normalizeTags: true, // Transform tags to lowercase
+        explicitArray: false // Only put nodes in array if >1
+    }
+}));
 
 
 var cookieParser = require('cookie-parser');

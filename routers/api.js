@@ -14,6 +14,8 @@ var path = require('path');
 
 // 引入user模型
 var User = require('../models/User');
+// 引入Course模型  课程
+var Course = require('../models/Course');
 
 
 // 统一返回格式
@@ -29,6 +31,96 @@ router.use(function (req,res,next) {
 router.get('/login',function (req,res,next) {
     res.render('admin/login');
 });
+
+/*微信支付回调*/
+router.post('/course/notify',function (req,res,next) {
+    // body...
+    // console.log(req.body.xml);
+
+    var xml = req.body.xml;
+    if(xml.return_code == 'SUCCESS' && xml.result_code == 'SUCCESS' ){
+        // console.log("xml数据："+xml);
+        // console.log('xml数据2'+xml.attach.split(","));
+        var courseId = xml.attach.split(",")[0];
+        var userId = xml.attach.split(",")[1];
+        console.log("courseId:"+courseId);
+        console.log("userId:"+userId);
+
+        var isShow = false; // 判断是否保存了
+        Course.findOne({
+            _id: courseId
+        }).populate('peopleNum').then(function (course) {
+            console.log(course);
+            for (var j=0; j<course.peopleNum.length; j++){
+                console.log(course.peopleNum.length);
+                if (course.peopleNum[j]._id == userId) {
+                    isShow = true;
+                }
+            }
+            console.log('查询课程');
+            console.log('isShow:'+isShow);
+
+            if(isShow){
+                return Promise.reject();
+            }else{
+                console.log('保存0');
+                User.update({
+                    _id: userId
+                },{
+                    '$addToSet':{'course':courseId}
+                }).then(function (result) {
+                    console.log(result);
+                    if(!result.nModified){
+                        return;
+                    }
+                    Course.update({
+                        _id: courseId
+                    },{
+                        '$addToSet':{'peopleNum': userId}
+                    }).then(function (result) {
+                        console.log('保存课程订购情况');
+                    })
+                });
+            }
+        })
+
+
+
+
+
+
+        // User.update({
+        //     _id: req.userInfo._id.toString()
+        // },{
+        //     '$addToSet':{'course':id}
+        // }).then(function (result) {
+        //     if(!result.nModified){
+        //         res.render('main/tip',{
+        //             userInfo: req.userInfo,
+        //             status: 'warning',
+        //             message: '已经报名过，不能再次报名',
+        //             url: '/course/detail?id='+id
+        //         });
+        //         return;
+        //     }
+        //     Course.update({
+        //         _id: id
+        //     },{
+        //         '$addToSet':{'peopleNum': req.userInfo._id.toString()}
+        //     }).then(function (result) {
+        //         res.render('main/tip',{
+        //             userInfo: req.userInfo,
+        //             status: 'success',
+        //             message: '报名成功',
+        //              url: '/personal/course?userid='+ req.userInfo._id
+        //         });
+        //     })
+        // });
+    }  
+
+})
+
+
 
 /** 用户注册  */
 router.post('/user/register',function (req,res) {   //   /user/xxx === /api/user/xxx
