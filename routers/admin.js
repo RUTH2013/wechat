@@ -350,6 +350,7 @@ router.post('/course/add',function (req,res) {
         money: req.body.money,
         img: req.body.img,
         details: req.body.details,
+        addTime: new Date(),
         user: req.userInfo._id.toString()
     }).save().then(function (result) {
         res.render('admin/tip',{
@@ -865,6 +866,7 @@ router.post('/material/add',function (req,res) {
         description: req.body.description,
         content: req.body.content,
         img: req.body.img,
+        addTime: new Date(),
         user: req.userInfo._id.toString()
     }).save().then(function () {
         return Materialtype.update({
@@ -1133,6 +1135,7 @@ router.post('/quiz/add',function (req,res) {
     new Quiz({
         title: req.body.title,
         description: req.body.description,
+        addTime: new Date(),
         user: req.userInfo._id.toString()
     }).save().then(function (result) {
         res.render('admin/tip',{
@@ -1190,7 +1193,7 @@ router.get('/quiz/edit',function (req,res) {
     Quiz.findOne({
         _id: id
     }).populate(populateParams).then(function (quiz) {
-        console.log(quiz);
+        // console.log(quiz);
         if (!quiz){ // 当不存在该分类
 
             res.render('admin/tip',{
@@ -1248,6 +1251,7 @@ router.post('/quiz/edit',function (req,res) {
                 content: req.body.content,
                 user: req.userInfo._id.toString(),
                 quiz: quiz._id.toString(),
+                addTime: new Date(),
                 replies: req.body.isReply
             }).save();
 
@@ -1256,6 +1260,7 @@ router.post('/quiz/edit',function (req,res) {
             return new Comment({  /// 保存评论信息
                 content: req.body.content,
                 user: req.userInfo._id.toString(),
+                addTime: new Date(),
                 quiz: quiz._id.toString()
             }).save();
         }
@@ -1312,7 +1317,7 @@ router.get('/quiz/edit/commentDelete',function (req,res) {
         })
 
     }).then(function (comments) {
-        console.log(comments);
+        // console.log(comments);
         // idList.push(result._id.toString());
         quizId2 = comments[0].quiz;
         for (var i=0; i< comments.length; i++){
@@ -1391,7 +1396,7 @@ router.post('/personal',function (req,res,next) {
             return user.save(); // 保存
         }
     }).then(function (result) {
-        console.log(result);
+        // console.log(result);
 
         res.render('admin/tip',{
             userInfo: req.userInfo,

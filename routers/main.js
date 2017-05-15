@@ -100,7 +100,6 @@ router.post('/course/pay',function (req,res) {
     var notify_url = 'http://wechat.sowdf.com/api/course/notify';
     var spbill_create_ip = "120.24.169.84";
     var total_fee = Number(req.body.money*100)  || 0;　
-    console.log("金额２："+total_fee);
 
 
 
@@ -128,7 +127,7 @@ router.post('/course/pay',function (req,res) {
     User.findOne({
         _id: req.userInfo._id.toString()
     }).then(function (user) {
-        console.log(user);
+        // console.log(user);
         if(!user){
             data.code = 2;
             res.json(data);
@@ -146,7 +145,6 @@ router.post('/course/pay',function (req,res) {
                     isPay = true;
                 }
             }
-            console.log('isPay'+isPay);
 
             if(isPay){  // 已经报名了
                 data.code = 2;
@@ -426,7 +424,7 @@ router.get('/quiz/detail',function (req,res) {
     Quiz.findOne({
         _id: id
     }).populate(populateParams).then(function (quiz) {
-        console.log(quiz);
+        // console.log(quiz);
         if (!quiz){ // 当不存在该分类
 
             res.render('main/tip',{
@@ -484,6 +482,7 @@ router.post('/quiz/detail',function (req,res) {
                 content: req.body.content,
                 user: req.userInfo._id.toString(),
                 quiz: quiz._id.toString(),
+                addTime: new Date(),
                 replies: req.body.isReply
             }).save();
 
@@ -492,6 +491,7 @@ router.post('/quiz/detail',function (req,res) {
             return new Comment({  /// 保存评论信息
                 content: req.body.content,
                 user: req.userInfo._id.toString(),
+                addTime: new Date(),
                 quiz: quiz._id.toString()
             }).save();
         }
@@ -548,7 +548,7 @@ router.get('/quiz/detail/commentDelete',function (req,res) {
         })
 
     }).then(function (comments) {
-        console.log(comments);
+        // console.log(comments);
         // idList.push(result._id.toString());
         quizId2 = comments[0].quiz;
         for (var i=0; i< comments.length; i++){
@@ -588,12 +588,13 @@ router.post('/quiz/add',function (req,res) {
     new Quiz({
         title: req.body.title,
         description: req.body.description,
+        addTime: new Date(),
         user: req.userInfo._id.toString()
     }).save().then(function (result) {
         res.render('main/tip',{
             userInfo: req.userInfo,
             status: 'success',
-            message: '内容保存成功',
+            message: '提问成功',
             url: '/quiz'
         });
     });

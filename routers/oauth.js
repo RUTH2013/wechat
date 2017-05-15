@@ -101,8 +101,11 @@ router.get('/userInfo',function(req,res,next){
     User.findOne({
         openId: responseData.userInfo.openId  // 查询条件
     }).then(function (userInfo) {
-        // console.log('用户信息'+userInfo); // 查询到的数据信息
+        console.log('用户信息'+userInfo); // 查询到的数据信息
         // 保存用户注册的信息到数据库
+        if (!responseData.userInfo.openId) {
+            return  Promise.reject();
+        }
         if (userInfo) {
             userInfo.username = responseData.userInfo.username;
             userInfo.headImgUrl = responseData.userInfo.headImgUrl;
